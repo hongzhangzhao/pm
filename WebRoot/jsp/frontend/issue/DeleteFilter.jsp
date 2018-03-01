@@ -19,7 +19,6 @@
             <!-- 右侧: 删除过滤器 -->
             <td width="80%" valign="top">
                 <form name="simpleform" method="post" action="doDeleteFilter.jsp">
-
                     <table class="simpleform maxWidth">
                         <tr>
                             <td class="simpleformheader" colspan="2">

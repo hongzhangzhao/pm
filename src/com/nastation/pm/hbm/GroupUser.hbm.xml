@@ -21,7 +21,7 @@
 
         <property name="groupId" type="int" column="group_id" />
 
-        
+
 
 
 

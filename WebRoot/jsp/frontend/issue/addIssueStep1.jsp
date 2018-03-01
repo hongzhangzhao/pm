@@ -43,6 +43,7 @@
                             <option value="<s:property value="#it.id"/>"><s:property value="#it.name"/></option>                      
                             </s:iterator>
                         </select>
+                     </div>
                         <input type="submit" value="下一步>>" class="btn btn-info btn-block" />
                         <input type="button" onclick="location.href='<c:url value="/jsp/frontend/dashboard.jsp"/>'" value="取消" title="取消 (Alt + `)" accesskey="`" id="cancelButton" class="btn btn-warning btn-block" />
                 </form>

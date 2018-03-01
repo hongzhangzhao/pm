@@ -67,6 +67,8 @@ public class CommentAssignIssuedefaultAction extends ActionSupport {
     public String execute() throws Exception {
         IssueBO ib = IssueBO.getIssueBO();
         Issue issue = ib.getIssueDetailByKey(getIssueKey());
+        ActionContext cx = ActionContext.getContext();
+        cx.put("issue",issue);
         User user = (User) ActionContext.getContext().getSession().get(Global.SESSION_USER);
         setUserId(user.getId());
         setUserName(user.getName());
@@ -75,9 +77,7 @@ public class CommentAssignIssuedefaultAction extends ActionSupport {
         }
 
         ResolutionBO rb = ResolutionBO.getResolutionBO();
-        List<Resolutionhbm> resolutionList = rb.getAllResolutions();
-
-        ActionContext cx = ActionContext.getContext();
+        List<Resolutionhbm> resolutionList = rb.getAllResolutions();    
         cx.put("resolutions", resolutionList);
 
         ProjectUserBO pub = ProjectUserBO.getProjectUserBO();
