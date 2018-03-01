@@ -12,50 +12,6 @@
 <%@taglib prefix="s" uri="/struts-tags"%>  
 <%@taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
 
-<%
-    String projectIdStr = request.getParameter("projectId");
-			String issueTypeIdStr = request.getParameter("issueTypeId");
-
-			boolean hasError = false;
-			String errMsg = "";
-			if (StringUtils.isBlank(projectIdStr)) {
-				hasError = true;
-				errMsg += "Please choose a project!";
-			}
-			if (StringUtils.isBlank(issueTypeIdStr)) {
-				hasError = true;
-				errMsg += "Please choose a issue type!";
-			}
-			if (hasError) {
-				request.setAttribute("error", errMsg);
-%>
-<jsp:forward page="addIssueStep1.jsp"></jsp:forward>
-<%
-    }
-
-			int projectId = Integer.parseInt(projectIdStr);
-			int issueTypeId = Integer.parseInt(issueTypeIdStr);
-
-			//获得project信息
-			ProjectBO projectBO = new ProjectBO();
-			Projecthbm project = projectBO.getProject(projectId);
-
-			//获得issueType信息
-			IssueTypeBO issueTypeBO = new IssueTypeBO();
-			IssueTypehbm issueType = issueTypeBO.getIssueType(issueTypeId);
-
-			//获得issue优先级信息
-			IssuePriorityBO issuePriorityBO = new IssuePriorityBO();
-			List<IssuePriorityhbm> issuePriorityList = issuePriorityBO.getIssuePriorityList();
-
-			//获得project模块信息
-			ProjectComponentBO projectComponentBO = new ProjectComponentBO();
-			List projectComponentList = projectComponentBO.getProjectComponentList(projectId);
-
-			//获得project成员信息
-			ProjectUserBO projectUserBO = new ProjectUserBO();
-			List<ProjectUser> projectUserList = projectUserBO.getProjectUserByProjectId(projectId);
-%>
 <html>
 <head>
 <title>Add Issue</title>
@@ -81,15 +37,15 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
-                                <input type="hidden" name="projectId" value="<%=project.getId()%>">
-                                <input type="hidden" name="projectkey" value="<%=project.getProjectKey()%>">
+                                <input type="hidden" name="projectId" value="<s:property value="projectId"/>">
+                                <input type="hidden" name="projectkey" value="<s:property value="#proj.projectKey"/>">
                                 <h4 class="text-success text-center">
                                                                 项目:<s:property value="#proj.name"/></h4>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <input type="hidden" name="issueTypeId" value="<%=issueType.getId()%>">
+                                <input type="hidden" name="issueTypeId" value="<s:property value="issueTypeId"/>">
                                 <h4 class="text-success text-center">
                                                                 问题类型:<s:property value="#issueType.name"/></h4>
                             </div>

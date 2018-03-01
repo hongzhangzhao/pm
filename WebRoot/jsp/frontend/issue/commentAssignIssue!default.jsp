@@ -5,6 +5,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.nastation.pm.beanhbm.*"%>
 <%@taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
+<%@taglib prefix="s" uri="/struts-tags"%>
 <%
     String issueKey = request.getParameter("issueKey");
 			IssueBO ib = new IssueBO();
@@ -40,7 +41,7 @@
                                             </td>
                                             <td valign="top">
                                                 <b>
-                                                    <a id="issue_key_SMS-2" href="issueDetailLayout.jsp?issueKey=<%=issue.getIssueKey()%>&action=forMe"><%=issue.getIssueKey()%></a>
+                                                    <a id="issue_key_SMS-2" href="issueDetailLayout.jsp?issueKey=<s:property value="issueKey"/>&action=forMe"><s:property value="issueKey"/></a>
                                                 </b>
                                             </td>
                                         </tr>
@@ -49,7 +50,7 @@
                                                 <b>类型:</b>
                                             </td>
                                             <td valign="top">
-                                                <img height="16" border="0" width="16" alt="" src="<%=request.getContextPath()%><%=issue.getIssueTypeIcon()%>" /><%=issue.getIssueTypeName()%>
+                                                <img height="16" border="0" width="16" alt="" src="<%=request.getContextPath()%><s:property value="#issue.issueTypeIcon"/>" /><s:property value="#issue.issueTypeName"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -57,32 +58,27 @@
                                                 <b>状态:</b>
                                             </td>
                                             <td valign="top">
-                                                <img height="16" border="0" width="16" alt="" src="<%=request.getContextPath()%><%=issue.getIssueStatusIcon()%>" />
-                                                <%=issue.getIssueStatusName()%>
+                                                <img height="16" border="0" width="16" alt="" src="<%=request.getContextPath()%><s:property value="#issue.issueStatusIcon"/>" />
+                                                <s:property value="#issue.issueStatusName"/>
                                             </td>
                                         </tr>
-                                        <%
-                                            if (issue.getIssueStatus() == Global.CLOSE || issue.getIssueStatus() == Global.RESOLVED) {
-                                        %>
+                                        <s:if test="issueStatus==true">
                                         <tr>
                                             <td valign="top">
                                                 <b>解决:</b>
                                             </td>
                                             <td valign="top">
-
-                                                <%=issue.getResolution()%>
+                                                <s:property value="#issue.resolution"/>
                                             </td>
                                         </tr>
-                                        <%
-                                            }
-                                        %>
+                                        </s:if>
                                         <tr>
                                             <td valign="top">
                                                 <b>优先级:</b>
                                             </td>
                                             <td valign="top">
-                                                <img height="16" border="0" width="16" alt="" src="<%=request.getContextPath()%><%=issue.getPriorityLevelIcon()%>" />
-                                                <%=issue.getPriorityLevel()%>
+                                                <img height="16" border="0" width="16" alt="" src="<%=request.getContextPath()%><s:property value="#issue.priorityLevelIcon"/>" />
+                                                <s:property value="#issue.priorityLevel"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -90,7 +86,7 @@
                                                 <b>开发者:</b>
                                             </td>
                                             <td valign="top">
-                                                <a href="/secure/ViewProfile.jspa?name=zhang"><%=issue.getAssignee()%></a>
+                                                <a href="/secure/ViewProfile.jspa?name=zhang"><s:property value="#issue.assignee"/></a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -98,7 +94,7 @@
                                                 <b>报告人:</b>
                                             </td>
                                             <td valign="top">
-                                                <a href="/secure/ViewProfile.jspa?name=kris"><%=issue.getReporter()%></a>
+                                                <a href="/secure/ViewProfile.jspa?name=kris"><s:property value="#issue.reporter"/></a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -119,17 +115,15 @@
                                             <tr>
                                                 <td class="simpleformheader" colspan="2">
                                                     <h3 class="formtitle">
-                                                        <%
-                                                            if (status.equals("close")) {
-                                                        				out.println("关闭问题");
-                                                        			}
-                                                        			if (status.equals("resolved")) {
-                                                        				out.println("解决问题");
-                                                        			}
-                                                        			if (status.equals("reopen")) {
-                                                        				out.println("恢复开启问题");
-                                                        			}
-                                                        %>
+                                                    <s:if test="status==close">
+                                                                                                        关闭问题
+                                                    </s:if>
+                                                    <s:if test="status==resolved">
+                                                                                                        解决问题
+                                                    </s:if>
+                                                    <s:if test="reopen">
+                                                                                                        回复开启问题
+                                                    </s:if>          
                                                     </h3>
                                                 </td>
                                             </tr>
@@ -141,22 +135,15 @@
                                                     <label for="resolution">
                                                         <span class="required" title="斜体字是必填的">
                                                             <sup> * </sup>
-                                                            解决:
+                                                                                                                        解决:
                                                         </span>
                                                     </label>
                                                 </td>
                                                 <td class="fieldValueArea">
                                                     <select id="newId_select" name="newId">
-                                                        <%
-                                                            ResolutionBO rb = new ResolutionBO();
-                                                        			List resolutionList = rb.getAllResolutions();
-                                                        			for (int i = 0; i < resolutionList.size(); i++) {
-                                                        				Resolution resolution1 = (Resolution) resolutionList.get(i);
-                                                        %>
-                                                        <option value=<%=resolution1.getId()%>><%=resolution1.getName()%></option>
-                                                        <%
-                                                            }
-                                                        %>
+                                                        <s:iterator value="#resolutions" var="r">
+                                                        <option value=<s:property value="#r.id"/>><s:property value="#r.name"/></option>
+                                                        </s:iterator>
                                                     </select>
                                                 </td>
                                             </tr>
@@ -176,40 +163,29 @@
                                                 </td>
                                                 <td class="fieldValueArea">
                                                     <script type="text/javascript">
-                                                                                                                                                                                                                    function sendTo(
-                                                                                                                                                                                                                            name) {
-                                                                                                                                                                                                                        //alert(name);
-                                                                                                                                                                                                                        document
-                                                                                                                                                                                                                                .getElementById("assignee").value = name;
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                </script>
-
+                                                    function sendTo(name) {
+                                                        //alert(name);
+                                                        document.getElementById("assignee").value = name;
+                                                    }                                                                                                                                                            
+                                                    </script>
                                                     <select id="assignee" name="assignee">
                                                         <option value="-1">
 															-自动-
 														</option>
-                                                        <option value=<%=user.getId()%>><%=user.getName()%></option>
+                                                        <option value=<s:property value="userId"/>><s:property value="userName"/></option>
                                                         <optgroup label="---------------">
-                                                            <%
-                                                                ProjectUserBO pub = new ProjectUserBO();
-
-                                                                UserBO ub = new UserBO();
-                                                                List userList = pub.getProjectUserByProjectId(issue.getProjectId());
-
-                                                                for (int j = 0; j < userList.size(); j++) {
-                                                                    ProjectUser projectUser = (ProjectUser) userList.get(j);
-                                                                    Userhbm puser = ub.getUser(projectUser.getUserId());
-                                                                    if (puser.getName().equals(issue.getAssignee())) {
-                                                                        out.println("<option selected value=" + puser.getId() + ">");
-                                                                        out.println(puser.getName());
-                                                                        out.println("</option>");
-                                                                    } else {
-                                                                        out.println("<option value=" + puser.getId() + ">");
-                                                                        out.println(puser.getName());
-                                                                        out.println("</option>");
-                                                                    }
-                                                                }
-                                                            %>
+                                                        <s:iterator value="#users" var="u">
+                                                        <s:if test="#u.name==#issue.assignee">
+                                                        <option selected value="<s:property value="#u.id"/>">
+															<s:property value="#u.name"/>
+                                                        </option>
+                                                        </s:if>
+                                                        <s:else>
+                                                        <option value="<s:property value="#u.id"/>">
+															<s:property value="#u.name"/>
+                                                        </option>
+                                                        </s:else>                                   
+                                                            </s:iterator>
                                                         </optgroup>
                                                     </select>
                                                     <a href="javascript:sendTo('<%=user.getId()%>');">分配给我</a>
@@ -234,6 +210,15 @@
                                             </tr>
                                             <tr class="hidden">
                                                 <td>
+                                                <s:if test="status==close">
+                                                      
+                                                </s:if>
+                                                <s:if test="status==resolved">
+                                                
+                                                </s:if>
+                                                <s:if test="status==reopen">
+                                                
+                                                </s:if>
                                                     <%
                                                         if (status.equals("close")) {
                                                             out.println("<input type=hidden value=close name=status />");

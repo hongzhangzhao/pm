@@ -26,7 +26,7 @@ public class AssigneeAction extends ActionSupport {
 
     public boolean isIssueStatus() {
         return issueStatus;
-    }
+    } 
 
     public void setIssueStatus(boolean issueStatus) {
         this.issueStatus = issueStatus;

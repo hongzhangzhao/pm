@@ -5,18 +5,7 @@
 <%@ page import="com.nastation.pm.beanhbm.*"%>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
-<%
-    String issueKey = request.getParameter("issueKey");
-			if (StringUtils.isBlank(issueKey)) {
-				return;
-			}
-			IssueBO issueBo = new IssueBO();
-			Issuehbm issue = issueBo.getIssueByKey(issueKey);
-			if (issue == null) {
-				return;
-			}
-			String issueName = "CLONE-" + issue.getName();
-%>
+
 <script type="text/javascript">
     function check() {
         var username = simpleform.summary.value;
